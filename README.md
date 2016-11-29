@@ -68,6 +68,10 @@ disabled:
 
     sudo update-rc.d -f hostapd remove
     sudo update-rc.d -f dnsmasq remove
+    sudo systemctl stop hostapd
+    sudo systemctl stop dnsmasq
+    sudo systemctl disable hostapd
+    sudo systemctl disable dnsmasq
 
 You can verify that this worked by checking that there are no files left in `/etc/rc*.d` referencing those two services,
 so the following to commands should return `0`:
@@ -132,7 +136,7 @@ to do that).
 It's finally time to install `netconnectd`:
 
     cd
-    git clone https://github.com/foosel/netconnectd
+    git clone https://github.com/arpanpal010/netconnectd
     cd netconnectd
     sudo python setup.py install
     sudo python setup.py install_extras
@@ -148,6 +152,8 @@ Modify `/etc/netconnectd.yaml` as necessary:
 Last, start netconnectd:
 
     sudo service netconnectd start
+    # or 
+    # sudo systemctl start netconnectd
 
 Verify that the logfile looks ok-ish:
 
@@ -173,4 +179,6 @@ You can always get help with `netconnectcli --help` or `netconnectcli <command> 
 If everything looks alright, configure the service so that it starts at boot up:
 
     sudo update-rc.d netconnectd defaults 98
+    # or
+    # sudo systemctl enable netconnectd
 
